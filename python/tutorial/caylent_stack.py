@@ -1,19 +1,21 @@
 from aws_cdk import (
     # Duration,
     Stack,
-    # aws_sqs as sqs,
+    aws_kms as kms,
+    aws_s3 as s3,
+    aws_sns as sns,
+    aws_sqs as sqs,
 )
 from constructs import Construct
 
-class CaylentStack(Stack):
 
+class CaylentStack(Stack):
     def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
 
-        # The code that defines your stack goes here
+        key = kms.Key(self, "EncryptionKey")
 
-        # example resource
-        # queue = sqs.Queue(
-        #     self, "PythonQueue",
-        #     visibility_timeout=Duration.seconds(300),
-        # )
+        bucket = s3.Bucket(self, "SouceBucket", encryption_key=key)
+        topic = sns.Topic(self, "EventTopci", master_key=key)
+        queue1 = sqs.Queue(self, "QueueOne", encryption_master_key=key)
+        queue2 = sqs.Queue(self, "QueueTwo", encryption_master_key=key)
