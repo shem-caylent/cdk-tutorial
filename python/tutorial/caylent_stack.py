@@ -16,6 +16,6 @@ class CaylentStack(Stack):
         key = kms.Key(self, "EncryptionKey")
 
         bucket = s3.Bucket(self, "SouceBucket", encryption_key=key)
-        topic = sns.Topic(self, "EventTopci", master_key=key)
+        topic = sns.Topic(self, "EventTopic", master_key=key)
         queue1 = sqs.Queue(self, "QueueOne", encryption_master_key=key)
         queue2 = sqs.Queue(self, "QueueTwo", encryption_master_key=key)
