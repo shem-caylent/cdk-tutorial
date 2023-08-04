@@ -1,3 +1,4 @@
+from os import path
 from aws_cdk import (
     # Duration,
     Stack,
@@ -12,7 +13,6 @@ from aws_cdk import (
     aws_sns_subscriptions as subscriptions
 )
 from constructs import Construct
-import path
 
 aspectRatios = [
     "16x16", "32x32", "64x64", "128x128", "64x128"
@@ -37,7 +37,7 @@ class CaylentStack(Stack):
             [width, height] = ratio.split('x')
             func = lambda_.Function(self,
                                     f'{ratio}Handler',
-                                    code=lambda_.Code.from_asset(path.join(__dirname, 'index.py')),
+                                    code=lambda_.Code.from_asset(path.join(path.dirname(__file__), 'index.py')),
                                     handler='handler',
                                     runtime=lambda_.Runtime.PYTHON_3_9,
                                     environment={
